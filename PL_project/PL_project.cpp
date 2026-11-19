@@ -9,8 +9,8 @@ using namespace std;
 
 /// @brief contains parameters for cards such as their suits ranks and values
 struct Card {
-    string suit;
-    string rank;
+    string suit; /// ♥, ♦, ♣, ♠
+    string rank; /// A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
     int value;
 };
 
@@ -71,7 +71,7 @@ void settings(GameSettings& gamesets){
     do{
         cout << "\n=====Settings=====\n";
         cout << "1. Number of decks: " << gamesets.numberOfDecks << endl;
-        cout << "2. Hit soft on 17: " << ((gamesets.hitSoft17) ? "On": "Off") << endl;
+        cout << "2. Hit on soft 17: " << ((gamesets.hitSoft17) ? "On": "Off") << endl;
         cout << "3. Back to main menu." << endl;
         set_choice = getValidInt("Enter operation: ");
 
@@ -212,6 +212,11 @@ void show_hand(vector<Card>& deck, string prompt){
 void player_play(vector<Card>& player_hand, vector<Card>& deck){
     bool run = true;
     int operation;
+    if (hand_sum(player_hand) == 21){
+        show_hand(player_hand, "Your hand:");
+        run = false;
+    }
+    
 
     while (run)
     {
@@ -259,7 +264,7 @@ void gameloop(GameSettings& gamesets){
     /// game options-gameloop menu choices: controls - inside game choices: fin - determines the number of inside game choices
     bool game_run = true, validcontrol = false;
     double player_money = 2500, bet = 0;
-    string prompt;
+    string prompt, st;
     vector<Card> deck;
     vector<Card> player_hand, player_hand1, player_hand2; ///p_h1 and p_h2 is used for splitting
     vector<Card> table;
@@ -306,6 +311,10 @@ void gameloop(GameSettings& gamesets){
 
                     cout << "\nYou Won!!\n+" << bet*1.5 << "$\n";
                     player_money += bet*1.5;
+
+                    cout << "\n(Press any key and enter to continue): ";
+                    cin >> st;
+
                 }
                 else if(hand_sum(player_hand) == 21 && hand_sum(table) == 21){
                     game_run = false;
@@ -315,6 +324,9 @@ void gameloop(GameSettings& gamesets){
                     show_hand(table, "Table:");
 
                     cout << "\nPush\n+0$\n";
+
+                    cout << "\n(Press any key and enter to continue): ";
+                    cin >> st;
                 }
 
                 /// checks if the game still runs (player didn't get blackjack)
@@ -351,6 +363,9 @@ void gameloop(GameSettings& gamesets){
                         cout << "\nDealer wins!!\n-" << bet << "$\n";
                         player_money -= bet;
                         game_run = false;
+
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                     }
                     else show_hand(player_hand, "Your hand:");
 
@@ -366,14 +381,23 @@ void gameloop(GameSettings& gamesets){
                     if (tab_sum > 21 || tab_sum < hand_sum(player_hand)){
                         cout << "\nYou Won!!\n+" << bet << "$\n";
                         player_money += bet;
+
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                     }
                     else if (tab_sum > hand_sum(player_hand))
                     {
                         cout << "\nDealer wins!!\n-" << bet << "$\n";
                         player_money -= bet;
+
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                     }
                     else{
                         cout << "\nPush\n+0$\n";
+
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                     }
                     
                     game_run = false;
@@ -395,6 +419,9 @@ void gameloop(GameSettings& gamesets){
                         show_hand(table, "Table:");
                         cout << "\nDealer wins!!\n-" << bet << "$\n";
                         player_money -= bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
                         else{
                         table_play(table, deck, gamesets);
@@ -404,15 +431,24 @@ void gameloop(GameSettings& gamesets){
                         if (tab_sum > 21 || tab_sum < hand_sum(player_hand)){
                         cout << "\nYou Won!!\n+" << bet << "$\n";
                         player_money += bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
 
                         else if (tab_sum > hand_sum(player_hand)){
                         cout << "\nDealer wins!!\n-" << bet << "$\n";
                         player_money -= bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
 
                         else{
                         cout << "\nPush\n+0$\n";
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
                         }
 
@@ -451,21 +487,33 @@ void gameloop(GameSettings& gamesets){
                         if (hand_sum(player_hand2) > 21){
                         cout << "\nDealer wins!!\n-" << bet << "$\n";
                         player_money -= bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
 
                         else{
                         if (tab_sum > 21 || tab_sum < hand_sum(player_hand2)){
                         cout << "\nYou Won!!\n+" << bet << "$\n";
                         player_money += bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
 
                         else if (tab_sum > hand_sum(player_hand2)){
                         cout << "\nDealer wins!!\n-" << bet << "$\n";
                         player_money -= bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
 
                         else{
                         cout << "\nPush\n+0$\n";
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
                         }
 
@@ -475,21 +523,33 @@ void gameloop(GameSettings& gamesets){
                         if (hand_sum(player_hand1) > 21){
                         cout << "\nDealer wins!!\n-" << bet << "$\n";
                         player_money -= bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
 
                         else{
                         if (tab_sum > 21 || tab_sum < hand_sum(player_hand1)){
                         cout << "\nYou Won!!\n+" << bet << "$\n";
                         player_money += bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
 
                         else if (tab_sum > hand_sum(player_hand1)){
                         cout << "\nDealer wins!!\n-" << bet << "$\n";
                         player_money -= bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
 
                         else{
                         cout << "\nPush\n+0$\n";
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
                         }
 
@@ -512,6 +572,9 @@ void gameloop(GameSettings& gamesets){
                         show_hand(table, "Table:");
                         cout << "\nDealer wins!!\n-" << bet << "$\n";
                         player_money -= bet;
+
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                     }
                     else{
                         table_play(table, deck, gamesets);
@@ -521,15 +584,24 @@ void gameloop(GameSettings& gamesets){
                         if (tab_sum > 21 || tab_sum < hand_sum(player_hand)){
                         cout << "\nYou Won!!\n+" << bet << "$\n";
                         player_money += bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
 
                         else if (tab_sum > hand_sum(player_hand)){
                         cout << "\nDealer wins!!\n-" << bet << "$\n";
                         player_money -= bet;
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
 
                         else{
                         cout << "\nPush\n+0$\n";
+                        
+                        cout << "\n(Press any key and enter to continue): ";
+                        cin >> st;
                         }
                     }
                     
